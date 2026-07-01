@@ -1,4 +1,3 @@
-
 // ============================================================
 // PORTFOLIO DATA
 // Add your Cloudinary image URLs to the `images` arrays below.
@@ -136,3 +135,26 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft') lbPrev();
   if (e.key === 'ArrowRight') lbNext();
 });
+
+// ============================================================
+// MOBILE NAV TOGGLE
+// ============================================================
+(function () {
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('nav-mobile-panel');
+  if (!toggle || !panel) return;
+
+  function closeMenu() {
+    toggle.classList.remove('open');
+    panel.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  function toggleMenu() {
+    const isOpen = panel.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  }
+  toggle.addEventListener('click', toggleMenu);
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  window.addEventListener('resize', () => { if (window.innerWidth > 640) closeMenu(); });
+})();
