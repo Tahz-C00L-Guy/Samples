@@ -521,37 +521,67 @@
     </div>
 
     <!-- RIGHT: Form -->
-    <form class="form-wrap" id="contact-form" action="https://formspree.io/f/xdkoqzpr" method="POST">
-      <div class="form-row">
-        <div class="fg"><label class="flbl">First Name</label><input class="fi" type="text" name="firstName" placeholder="First Name" required></div>
-        <div class="fg"><label class="flbl">Last Name</label><input class="fi" type="text" name="lastName" placeholder="Last Name" required></div>
-      </div>
-      <div class="fg"><label class="flbl">Email Address</label><input class="fi" type="email" name="email" placeholder="starwroughtiron@example.com" required></div>
-      <div class="fg"><label class="flbl">Phone Number</label><input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000"></div>
-      <div class="fg">
+    <form class="form-wrap" id="contact-form" action="https://formspree.io/f/mykqbgel" method="POST">
+    
+    <!-- Main email(s) -->
+    <input type="hidden" name="_to" value="msaqib831973@gmail.com, official@starwroughtiron.ae">
+    
+    <!-- Optional: CC more people -->
+    <!-- <input type="hidden" name="_cc" value="another@email.com"> -->
+    
+    <input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
+
+    <div class="form-row">
+        <div class="fg">
+            <label class="flbl">First Name</label>
+            <input class="fi" type="text" name="firstName" placeholder="First Name" required>
+        </div>
+        <div class="fg">
+            <label class="flbl">Last Name</label>
+            <input class="fi" type="text" name="lastName" placeholder="Last Name" required>
+        </div>
+    </div>
+
+    <div class="fg">
+        <label class="flbl">Email Address</label>
+        <input class="fi" type="email" name="email" placeholder="your@email.com" required>
+    </div>
+
+    <div class="fg">
+        <label class="flbl">Phone Number</label>
+        <input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000">
+    </div>
+
+    <div class="fg">
         <label class="flbl">Project Type</label>
         <select class="fi" name="projectType">
-          <option value="">Select a service...</option>
-          <option>Gates & Entrances</option>
-          <option>Staircases & Railings</option>
-          <option>Doors & Screens</option>
-          <option>Furniture & Décor</option>
-          <option>Restoration</option>
-          <option>Custom Commission</option>
+            <option value="">Select a service...</option>
+            <option>Gates & Entrances</option>
+            <option>Staircases & Railings</option>
+            <option>Doors & Screens</option>
+            <option>Furniture & Décor</option>
+            <option>Restoration</option>
+            <option>Custom Commission</option>
         </select>
-      </div>
-      <div class="fg"><label class="flbl">Location / Emirate</label><input class="fi" type="text" name="location" placeholder="Dubai, Sharjah, Abu Dhabi..."></div>
-      <div class="fg"><label class="flbl">Project Details</label><textarea class="fi" name="message" placeholder="Tell us about your vision — dimensions, references, timeline, or any details that will help us understand your commission..." required></textarea></div>
+    </div>
 
-      <!-- Honeypot spam trap: real users never see or fill this -->
-      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-      <input type="hidden" name="_subject" value="New Enquiry — Star Wrought Iron Website">
-      <!-- Sends a copy of every enquiry to this second address, in addition to your primary Formspree account email -->
-      <input type="hidden" name="_cc" value="msaqib831973@gmail.com">
+    <div class="fg">
+        <label class="flbl">Location / Emirate</label>
+        <input class="fi" type="text" name="location" placeholder="Dubai, Sharjah, Abu Dhabi...">
+    </div>
 
-      <button class="form-submit" type="submit" id="form-submit-btn">Send Enquiry &nbsp;→</button>
-      <div id="form-status" class="form-status" role="status" aria-live="polite" style="display:none"></div>
-    </form>
+    <div class="fg">
+        <label class="flbl">Project Details</label>
+        <textarea class="fi" name="message" placeholder="Tell us about your vision..." rows="6" required></textarea>
+    </div>
+
+    <!-- Spam protection -->
+    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+    <button class="form-submit" type="submit" id="form-submit-btn">Send Enquiry →</button>
+    
+    <div id="form-status" class="form-status" style="display:none; margin-top:15px;"></div>
+</form>
   </div>
 </section>
 
