@@ -483,7 +483,7 @@
           </div>
           <div>
             <div class="c-lbl">Phone</div>
-            <div class="c-val">+971 52 658 8117</div>
+            <div class="c-val">+971 6 000 0000</div>
           </div>
         </div>
         <div class="c-detail">
@@ -492,7 +492,7 @@
           </div>
           <div>
             <div class="c-lbl">Email</div>
-            <div class="c-val">msaqib831973@gmail.com</div>
+            <div class="c-val">info@starwroughtiron.ae</div>
           </div>
         </div>
         <div class="c-detail">
@@ -521,66 +521,69 @@
     </div>
 
     <!-- RIGHT: Form -->
-    <form class="form-wrap" id="contact-form" action="https://formspree.io/f/mykqbgel" method="POST">
-    
-    <!-- Main email(s) -->
-    <input type="hidden" name="_to" value="msaqib831973@gmail.com, official@starwroughtiron.ae">
-    
-    <!-- Optional: CC more people -->
-    <!-- <input type="hidden" name="_cc" value="another@email.com"> -->
-    
-    <input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
+<form class="form-wrap" id="contact-form" action="https://formspree.io/f/mykqbgel" method="POST">
 
-    <div class="form-row">
-        <div class="fg">
-            <label class="flbl">First Name</label>
-            <input class="fi" type="text" name="firstName" placeholder="First Name" required>
-        </div>
-        <div class="fg">
-            <label class="flbl">Last Name</label>
-            <input class="fi" type="text" name="lastName" placeholder="Last Name" required>
-        </div>
-    </div>
+<!-- Main email(s) -->
+<input type="hidden" name="_to" value="msaqib831973@gmail.com, official@starwroughtiron.ae">
 
+<!-- Optional: CC more people -->
+<!-- <input type="hidden" name="_cc" value="another@email.com"> -->
+
+<input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
+
+<!-- Redirect to Thank You page after successful submission -->
+<input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/thank-you.html">
+
+<div class="form-row">
     <div class="fg">
-        <label class="flbl">Email Address</label>
-        <input class="fi" type="email" name="email" placeholder="your@email.com" required>
+        <label class="flbl">First Name</label>
+        <input class="fi" type="text" name="firstName" placeholder="First Name" required>
     </div>
-
     <div class="fg">
-        <label class="flbl">Phone Number</label>
-        <input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000">
+        <label class="flbl">Last Name</label>
+        <input class="fi" type="text" name="lastName" placeholder="Last Name" required>
     </div>
+</div>
 
-    <div class="fg">
-        <label class="flbl">Project Type</label>
-        <select class="fi" name="projectType">
-            <option value="">Select a service...</option>
-            <option>Gates & Entrances</option>
-            <option>Staircases & Railings</option>
-            <option>Doors & Screens</option>
-            <option>Furniture & Décor</option>
-            <option>Restoration</option>
-            <option>Custom Commission</option>
-        </select>
-    </div>
+<div class="fg">
+    <label class="flbl">Email Address</label>
+    <input class="fi" type="email" name="email" placeholder="your@email.com" required>
+</div>
 
-    <div class="fg">
-        <label class="flbl">Location / Emirate</label>
-        <input class="fi" type="text" name="location" placeholder="Dubai, Sharjah, Abu Dhabi...">
-    </div>
+<div class="fg">
+    <label class="flbl">Phone Number</label>
+    <input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000">
+</div>
 
-    <div class="fg">
-        <label class="flbl">Project Details</label>
-        <textarea class="fi" name="message" placeholder="Tell us about your vision..." rows="6" required></textarea>
-    </div>
+<div class="fg">
+    <label class="flbl">Project Type</label>
+    <select class="fi" name="projectType">
+        <option value="">Select a service...</option>
+        <option>Gates & Entrances</option>
+        <option>Staircases & Railings</option>
+        <option>Doors & Screens</option>
+        <option>Furniture & Décor</option>
+        <option>Restoration</option>
+        <option>Custom Commission</option>
+    </select>
+</div>
 
-    <!-- Spam protection -->
-    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+<div class="fg">
+    <label class="flbl">Location / Emirate</label>
+    <input class="fi" type="text" name="location" placeholder="Dubai, Sharjah, Abu Dhabi...">
+</div>
 
-    <button class="form-submit" type="submit" id="form-submit-btn">Send Enquiry →</button>
-    
-    <div id="form-status" class="form-status" style="display:none; margin-top:15px;"></div>
+<div class="fg">
+    <label class="flbl">Project Details</label>
+    <textarea class="fi" name="message" placeholder="Tell us about your vision..." rows="6" required></textarea>
+</div>
+
+<!-- Spam protection -->
+<input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+<button class="form-submit" type="submit" id="form-submit-btn">Send Enquiry →</button>
+
+<div id="form-status" class="form-status" style="display:none; margin-top:15px;"></div>
 </form>
   </div>
 </section>
