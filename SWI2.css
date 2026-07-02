@@ -1,5 +1,9 @@
-/* --- TOKENS --- */
+  /* --- TOKENS --- */
 :root {
+  --green:        #4CAF50;
+  --darkgreen:    #3E8E41;
+  --shadowgreen:  rgba(76,175,80,0.2);
+  --lime:         #30d335;
   --copper:       #B5714A;
   --copper-dark:  #8B5635;
   --copper-light: #D4956E;
@@ -56,7 +60,7 @@ nav {
   border-radius: 4px;
 }
 .nav-social a:hover { border-color: var(--copper); color: var(--copper); background: rgba(181,113,74,0.08); }
-.nav-links { display: flex; gap: 1.9rem; list-style: none; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
 .nav-links a {
   font-size: 0.68rem; font-weight: 500;
   letter-spacing: 0.16em; text-transform: uppercase;
@@ -452,26 +456,6 @@ select.fi option { background: var(--forge); color: var(--parchment); }
   margin-top: 0.4rem;
 }
 .form-submit:hover { background: var(--copper-dark); }
-.form-submit:disabled { opacity: 0.55; cursor: not-allowed; }
-
-/* --- FORM STATUS MESSAGE --- */
-.form-status {
-  margin-top: 0.6rem; padding: 0.85rem 1.1rem;
-  font-family: var(--ff-body); font-size: 0.8rem; line-height: 1.6;
-  letter-spacing: 0.01em; border-left: 2px solid var(--copper);
-  background: rgba(181,113,74,0.08); color: rgba(240,232,224,0.75);
-}
-.form-status-sending { border-left-color: var(--copper); opacity: 0.85; }
-.form-status-success {
-  border-left-color: #8FBF8F;
-  background: rgba(143,191,143,0.1);
-  color: rgba(224,240,224,0.9);
-}
-.form-status-error {
-  border-left-color: #CC8A7D;
-  background: rgba(204,138,125,0.1);
-  color: rgba(250,224,218,0.9);
-}
 
 /* --- LIGHTBOX --- */
 #lightbox {
@@ -743,17 +727,17 @@ footer {
 .wa-float {
   position: fixed; right: 1.6rem; bottom: 1.6rem; z-index: 300;
   display: flex; align-items: center; gap: 10px;
-  background: var(--copper); color: var(--parchment);
+  background: var(--lime); color: var(--parchment);
   padding: 0.85rem 1.3rem 0.85rem 0.85rem;
   border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(26,20,16,0.35), 0 0 0 1px rgba(181,113,74,0.3);
+  box-shadow: 0 8px 24px rgba(26,20,16,0.35), 0 0 0 1px var(--shadowgreen);
   transition: background 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
   cursor: pointer;
 }
 .wa-float:hover {
-  background: var(--copper-dark);
+  background: var(--darkgreen);
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(26,20,16,0.4), 0 0 0 1px rgba(181,113,74,0.4);
+  box-shadow: 0 12px 28px rgba(26,20,16,0.4), 0 0 0 1px var(--shadowgreen);
 }
 .wa-float-icon {
   position: relative;
@@ -778,7 +762,7 @@ footer {
   pointer-events: none;
 }
 @keyframes waPulse {
-  0%   { box-shadow: 0 0 0 0 rgba(181,113,74,0.5); }
+  0%   { box-shadow: 0 0 0 0 var(--shadowgreen); }
   70%  { box-shadow: 0 0 0 12px rgba(181,113,74,0); }
   100% { box-shadow: 0 0 0 0 rgba(181,113,74,0); }
 }
