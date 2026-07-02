@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Thank You | Star Wrought Iron</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="7;url=https://star-wrought-iron.vercel.app/">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --copper:       #B5714A;
+    --copper-dark:  #8B5635;
+    --copper-light: #D4956E;
+    --gold:         #C9A07A;
+    --gold-pale:    #E8D5C0;
+    --parchment:    #F0E8E0;
+    --offwhite:     #F7F4F1;
+    --forge:        #1A1410;
+    --forge-mid:    #231A13;
+    --forge-light:  #2E2118;
+    --text-body:    #3A2D25;
+    --text-muted:   #7A6558;
+    --text-faint:   #A8988C;
+    --rule:         rgba(181,113,74,0.22);
+    --ff-display:   'Cormorant Garamond', Georgia, serif;
+    --ff-body:      'Inter', sans-serif;
+    --ease:         cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+
+  body {
+    font-family: var(--ff-body);
+    background: var(--forge);
+    color: var(--offwhite);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* subtle grid texture, matching hero */
+  .bg-grid {
+    position: absolute; inset: 0; opacity: 0.025;
+    background-image:
+      linear-gradient(var(--copper) 1px, transparent 1px),
+      linear-gradient(90deg, var(--copper) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .bg-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 640px; height: 640px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(181,113,74,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    width: 100%;
+    animation: fadeUp 0.9s var(--ease);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .icon-ring {
+    width: 74px; height: 74px;
+    margin: 0 auto 2rem;
+    border: 1px solid rgba(181,113,74,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .icon-ring::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border: 1px solid rgba(181,113,74,0.15);
+    border-radius: 50%;
+  }
+  .icon-ring svg { color: var(--copper); }
+
+  .rule-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; margin-bottom: 1rem;
+  }
+  .rule-line {
+    width: 40px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--copper), transparent);
+  }
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  h1 {
+    font-family: var(--ff-display);
+    font-weight: 500;
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    line-height: 1.1;
+    color: var(--offwhite);
+    margin-bottom: 0.4rem;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  .message {
+    font-size: 1rem;
+    color: rgba(240,232,224,0.7);
+    line-height: 1.75;
+    max-width: 420px;
+    margin: 1.4rem auto 2.6rem;
+    font-weight: 300;
+  }
+
+  .message strong {
+    color: var(--gold-pale);
+    font-weight: 500;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.95rem 2.6rem;
+    background: var(--copper);
+    color: var(--forge);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s var(--ease);
+  }
+  .btn-primary:hover {
+    background: var(--gold);
+    transform: translateY(-1px);
+  }
+
+  .redirect-note {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    letter-spacing: 0.02em;
+  }
+
+  .redirect-note span {
+    color: var(--copper-light);
+    font-weight: 600;
+  }
+
+  .footer-wordmark {
+    margin-top: 3.5rem;
+    font-family: var(--ff-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(201,160,122,0.4);
+  }
+  .footer-wordmark span { color: var(--copper); margin: 0 3px; }
+
+  @media (max-width: 480px) {
+    .message { font-size: 0.92rem; }
+    .btn-primary { width: 100%; padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="card">
+
+  <div class="icon-ring">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6L9 17l-5-5"/>
+    </svg>
+  </div>
+
+  <div class="rule-row">
+    <div class="rule-line"></div>
+    <span class="eyebrow">Enquiry Received</span>
+    <div class="rule-line"></div>
+  </div>
+
+  <h1>Thank <em>You</em></h1>
+
+  <p class="message">
+    Your enquiry has been received. Our team will review your project details and get back to you within <strong>24–48 hours</strong>.
+  </p>
+
+  <div class="actions">
+    <a href="https://star-wrought-iron.vercel.app/" class="btn-primary">Back to Home</a>
+    <p class="redirect-note">Redirecting automatically in <span id="countdown">7</span> seconds…</p>
+  </div>
+
+  <div class="footer-wordmark">Star<span>✦</span>Wrought Iron</div>
+
+</div>
+
+<script>
+  (function () {
+    var seconds = 7;
+    var el = document.getElementById('countdown');
+    var timer = setInterval(function () {
+      seconds -= 1;
+      if (seconds <= 0) {
+        clearInterval(timer);
+        window.location.href = "https://star-wrought-iron.vercel.app/";
+        return;
+      }
+      el.textContent = seconds;
+    }, 1000);
+  })();
+</script>
+
+</body>
+</html>
