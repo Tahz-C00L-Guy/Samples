@@ -159,9 +159,9 @@ document.addEventListener('keydown', function(e) {
   window.addEventListener('resize', () => { if (window.innerWidth > 640) closeMenu(); });
 })
 
+// Redirect to Thank You page after form submission
 document.getElementById('contact-form').addEventListener('submit', function() {
-    // This will run after form is submitted successfully
     setTimeout(() => {
-        window.location.href = "https://star-wrought-iron.vercel.app";
-    }, 1500); // 1.5 seconds delay so user sees success message
+        window.location.href = "https://star-wrought-iron.vercel.app/ThankYou.html";
+    }, 1800); // 1.8 seconds delay
 });
