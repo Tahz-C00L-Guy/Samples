@@ -522,51 +522,51 @@
 
     <!-- RIGHT: Form -->
 <form class="form-wrap" id="contact-form" action="https://formspree.io/f/mykqbgel" method="POST">
+    
+    <!-- Add this line here -->
+    <input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/ThankYou.html">
 
-<!-- Main email(s) -->
-<input type="hidden" name="_to" value="msaqib831973@gmail.com, official@starwroughtiron.ae">
+    <!-- Main email(s) -->
+  <input type="hidden" name="_to" value="msaqib831973@gmail.com, official@starwroughtiron.ae">
 
-<!-- Optional: CC more people -->
-<!-- <input type="hidden" name="_cc" value="another@email.com"> -->
+  <input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
 
-<input type="hidden" name="_subject" value="New Enquiry - Star Wrought Iron">
+  <!-- Redirect to Thank You page after successful submission -->
+  <input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/thank-you.html">
 
-<!-- Redirect to Thank You page after successful submission -->
-<input type="hidden" name="_next" value="https://star-wrought-iron.vercel.app/thank-you.html">
+  <div class="form-row">
+      <div class="fg">
+          <label class="flbl">First Name</label>
+          <input class="fi" type="text" name="firstName" placeholder="First Name" required>
+      </div>
+      <div class="fg">
+          <label class="flbl">Last Name</label>
+          <input class="fi" type="text" name="lastName" placeholder="Last Name" required>
+      </div>
+  </div>
 
-<div class="form-row">
-    <div class="fg">
-        <label class="flbl">First Name</label>
-        <input class="fi" type="text" name="firstName" placeholder="First Name" required>
-    </div>
-    <div class="fg">
-        <label class="flbl">Last Name</label>
-        <input class="fi" type="text" name="lastName" placeholder="Last Name" required>
-    </div>
-</div>
+  <div class="fg">
+      <label class="flbl">Email Address</label>
+      <input class="fi" type="email" name="email" placeholder="your@email.com" required>
+  </div>
 
-<div class="fg">
-    <label class="flbl">Email Address</label>
-    <input class="fi" type="email" name="email" placeholder="your@email.com" required>
-</div>
+  <div class="fg">
+      <label class="flbl">Phone Number</label>
+      <input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000">
+  </div>
 
-<div class="fg">
-    <label class="flbl">Phone Number</label>
-    <input class="fi" type="tel" name="phone" placeholder="+971 50 000 0000">
-</div>
-
-<div class="fg">
-    <label class="flbl">Project Type</label>
-    <select class="fi" name="projectType">
-        <option value="">Select a service...</option>
-        <option>Gates & Entrances</option>
-        <option>Staircases & Railings</option>
-        <option>Doors & Screens</option>
-        <option>Furniture & Décor</option>
-        <option>Restoration</option>
-        <option>Custom Commission</option>
-    </select>
-</div>
+  <div class="fg">
+      <label class="flbl">Project Type</label>
+      <select class="fi" name="projectType">
+          <option value="">Select a service...</option>
+          <option>Gates & Entrances</option>
+          <option>Staircases & Railings</option>
+          <option>Doors & Screens</option>
+          <option>Furniture & Décor</option>
+          <option>Restoration</option>
+          <option>Custom Commission</option>
+      </select>
+  </div>
 
 <div class="fg">
     <label class="flbl">Location / Emirate</label>
