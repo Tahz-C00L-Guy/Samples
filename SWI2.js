@@ -52,6 +52,15 @@ const projects = [
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171908_drn5lm.png",
       "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171553_iztnsw.png"
     ]
+  },
+  {
+    title: "Water Jet — Custom Commission",
+    subtitle: "Ultra-Luxury · Umm Al Quwain",
+    desc: "Write your project description here. Describe the scope, materials used, design inspiration, client brief and the craftsmanship that went into delivering this piece.",
+    images: [
+      "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171908_drn5lm.png",
+      "https://res.cloudinary.com/detapf5a7/image/upload/v1782481364/Screenshot_2026-06-26_171553_iztnsw.png"
+    ]
   }
 ];
 
