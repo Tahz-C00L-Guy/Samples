@@ -2,113 +2,380 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Gallery | Star Wrought Iron</title>
+    <title>Gallery | Star Wrought Iron — Premium Ironcraft UAE</title>
+    <meta name="description" content="Browse the complete Star Wrought Iron portfolio — bespoke gates, staircases, screens, chandeliers and custom ironwork commissions handcrafted across the UAE since 1990.">
     <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="SWI2.css" rel="stylesheet">
+
+    <!-- Gallery-page-only styles. Kept local to this file (rather than
+         editing SWI2.css) — all values reuse the design tokens and
+         classes already defined in SWI2.css for full consistency. -->
     <style>
-        .gallery-hero {
-            min-height: 70vh;
-            background: var(--forge);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 6rem 2rem;
-        }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 20px;
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-        .gallery-item:hover img {
-            transform: scale(1.08);
-        }
+      /* --- Image hero banner --- */
+      .gallery-banner {
+        position: relative;
+        min-height: 58vh;
+        display: flex; align-items: center; justify-content: center;
+        text-align: center; overflow: hidden;
+        background: var(--forge);
+      }
+      .gallery-banner-img {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%; object-fit: cover;
+        opacity: 0.55; filter: saturate(0.9) contrast(1.05);
+      }
+      .gallery-banner-overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg, rgba(26,20,16,0.5) 0%, rgba(26,20,16,0.78) 60%, var(--forge) 100%);
+      }
+      .gallery-banner-content { position: relative; z-index: 1; padding: 8rem 2rem 5rem; max-width: 760px; }
+      .gallery-banner-title {
+        font-family: var(--ff-display); font-weight: 300;
+        font-size: clamp(2.6rem, 7vw, 4.6rem); line-height: 1.05;
+        color: var(--parchment); margin: 0.7rem 0 1.1rem; letter-spacing: -0.01em;
+      }
+      .gallery-banner-title em { font-style: italic; color: var(--gold); }
+      .gallery-banner-tag {
+        font-family: var(--ff-display); font-style: italic; font-weight: 300;
+        font-size: clamp(1rem, 2vw, 1.15rem); color: rgba(201,160,122,0.75);
+        max-width: 520px; margin: 0 auto;
+      }
+
+      /* --- Compact gallery grid (smaller tiles, more per row) --- */
+      #gallery-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+      #gallery-grid .port-item { aspect-ratio: 1 / 1; }
+      #gallery-grid .port-label-title { font-size: 0.85rem; }
+      #gallery-grid .port-label-sub { font-size: 0.54rem; }
+      #gallery-grid .port-overlay { padding: 0.9rem; }
+      #gallery-grid .port-cat-tag { font-size: 0.52rem; padding: 2px 6px; }
+
+      /* --- Featured carousel --- */
+      .gallery-carousel { background: var(--forge); padding: 6rem 2rem; }
+      .carousel-header { text-align: center; margin-bottom: 2.6rem; }
+      .carousel-header .eyebrow { justify-content: center; }
+      .carousel-frame {
+        position: relative; max-width: 820px; margin: 0 auto;
+        aspect-ratio: 16 / 9; overflow: hidden; cursor: pointer;
+        border: 1px solid rgba(181,113,74,0.2); background: var(--forge-light);
+      }
+      .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s var(--ease); }
+      .carousel-slide.active { opacity: 1; }
+      .carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .carousel-slide-caption {
+        position: absolute; left: 0; right: 0; bottom: 0; padding: 1.4rem 1.6rem;
+        background: linear-gradient(to top, rgba(26,20,16,0.92), transparent);
+      }
+      .carousel-slide-caption .cs-title { font-family: var(--ff-display); color: var(--parchment); font-size: 1.2rem; }
+      .carousel-slide-caption .cs-sub { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
+      .carousel-arrow {
+        position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+        width: 42px; height: 42px; background: rgba(26,20,16,0.65);
+        border: 1px solid rgba(181,113,74,0.3); color: var(--gold);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 1.2rem; transition: all 0.2s var(--ease);
+      }
+      .carousel-arrow:hover { background: var(--copper); color: var(--parchment); border-color: var(--copper); }
+      .carousel-prev { left: 0.8rem; }
+      .carousel-next { right: 0.8rem; }
+      .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 1.4rem; }
+      .carousel-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: rgba(181,113,74,0.3); cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .carousel-dot.active { background: var(--copper); transform: scale(1.35); }
+
+      @media (max-width: 640px) {
+        .gallery-banner { min-height: 46vh; }
+        .gallery-banner-content { padding: 6rem 1.25rem 3rem; }
+        #gallery-grid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 8px; }
+        .gallery-carousel { padding: 4rem 1.25rem; }
+        .carousel-frame { aspect-ratio: 4 / 3; }
+        .carousel-arrow { width: 36px; height: 36px; font-size: 1rem; }
+      }
     </style>
 </head>
 <body>
 
-<!-- NAV (same as index) -->
+<!-- === GOOGLE FONTS === -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="SWI2.css" rel="stylesheet">
+
+<!-- === NAV (identical to index.html) === -->
 <nav>
   <div class="nav-brand">
-    <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+    <a href="index.html#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
       <span class="nav-wordmark">Star<span>✦</span>Wrought Iron</span>
     </a>
-    <!-- social icons same as index -->
+    <div class="nav-social">
+      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      </a>
+    </div>
   </div>
   <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#hero">Home</a></li>
     <li><a href="index.html#about">Heritage</a></li>
     <li><a href="index.html#services">Specialisations</a></li>
-    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="gallery.html" style="color:var(--copper)">Gallery</a></li>
     <li><a href="index.html#process">Process</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
-  <button class="nav-toggle" id="nav-toggle">...</button>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-mobile-panel" id="nav-mobile-panel">
+  <a href="index.html#hero">Home</a>
+  <a href="index.html#about">Heritage</a>
+  <a href="index.html#services">Specialisations</a>
+  <a href="gallery.html" style="color:var(--copper)">Gallery</a>
+  <a href="index.html#process">Process</a>
+  <a href="index.html#contact">Contact</a>
+</div>
 
-<!-- Gallery Hero -->
-<section class="gallery-hero">
-  <div>
-    <p class="hero-eyebrow">Our Craftsmanship</p>
-    <h1 class="hero-h1" style="color:var(--parchment)">Gallery</h1>
-    <p class="hero-tagline">Hand-forged masterpieces in iron</p>
+<!-- === HERO BANNER (image, full-width, overlay text) === -->
+<section class="gallery-banner">
+  <img class="gallery-banner-img"
+       src="https://res.cloudinary.com/detapf5a7/image/upload/v1782481362/Screenshot_2026-06-18_000125_hfmoo3.png"
+       alt="Star Wrought Iron — handcrafted ironwork">
+  <div class="gallery-banner-overlay"></div>
+  <div class="gallery-banner-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb" style="justify-content:center">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">／</span>
+      <span class="crumb-current">Gallery</span>
+    </nav>
+    <p class="hero-eyebrow" style="justify-content:center">Premium Ironcraft · Complete Portfolio</p>
+    <h1 class="gallery-banner-title">Our <em>Gallery</em></h1>
+    <p class="gallery-banner-tag">A closer look at three decades of handcrafted ironwork, shaped by hand in our Umm Al Quwain workshop.</p>
+    <div class="hero-actions" style="margin-top:2.2rem">
+      <a href="index.html" class="btn-ghost">← Back to Home</a>
+      <a href="index.html#contact" class="btn-primary">Commission a Piece →</a>
+    </div>
   </div>
 </section>
 
-<!-- Gallery Grid -->
-<section style="background:var(--parchment); padding-bottom: 6rem;">
-  <div class="gallery-grid" id="gallery-grid">
-    <!-- JS will populate this -->
+<!-- === SCROLLWORK DIVIDER — Forge bg (leads into carousel) === -->
+<div class="divider-wrap" style="background:var(--forge)">
+  <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g stroke="#B5714A" stroke-width="0.7" fill="none" opacity="0.3">
+      <line x1="0" y1="22" x2="490" y2="22"/>
+      <path d="M490,22 Q500,10 510,10 Q520,10 530,22 Q540,34 550,34 Q560,34 570,22 Q580,10 590,10 Q600,10 610,22 Q620,34 630,34 Q640,34 650,22 Q660,10 670,10 Q680,10 690,22"/>
+      <circle cx="590" cy="22" r="4" fill="rgba(181,113,74,0.15)" stroke="#B5714A" stroke-width="0.8"/>
+      <line x1="690" y1="22" x2="1200" y2="22"/>
+    </g>
+  </svg>
+</div>
+
+<!-- === FEATURED CAROUSEL === -->
+<section class="gallery-carousel" aria-label="Featured work carousel">
+  <div class="inner" style="max-width:1200px">
+    <div class="carousel-header">
+      <p class="eyebrow" style="color:var(--copper)">Featured Highlights</p>
+      <h2 class="display-title" style="color:var(--parchment)">A Closer <em>Look</em></h2>
+    </div>
+    <div class="carousel-frame" id="carouselFrame">
+      <button class="carousel-arrow carousel-prev" id="carouselPrev" aria-label="Previous slide">‹</button>
+      <div id="carouselTrack"><!-- slides injected by script below --></div>
+      <button class="carousel-arrow carousel-next" id="carouselNext" aria-label="Next slide">›</button>
+    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
   </div>
 </section>
 
-<!-- Footer (copy from index.html) -->
-<footer> ... your existing footer ... </footer>
+<!-- === SCROLLWORK DIVIDER — Parchment bg (leads into grid) === -->
+<div class="divider-wrap" style="background:var(--parchment)">
+  <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g stroke="#B5714A" stroke-width="0.7" fill="none" opacity="0.55">
+      <line x1="0" y1="22" x2="440" y2="22"/>
+      <path d="M440,22 C455,22 455,10 468,10 C481,10 481,34 494,34 C507,34 507,10 520,10 C533,10 533,22 540,22"/>
+      <circle cx="540" cy="22" r="3" fill="rgba(181,113,74,0.25)" stroke="#B5714A"/>
+      <circle cx="540" cy="22" r="8" stroke="#B5714A" stroke-width="0.5"/>
+      <circle cx="540" cy="22" r="13" stroke="rgba(181,113,74,0.25)" stroke-width="0.5"/>
+      <path d="M548,22 C555,22 555,10 568,10 C581,10 581,34 594,34 C607,34 607,10 620,10 C633,10 633,22 648,22"/>
+      <path d="M648,22 C665,22 665,10 678,10"/>
+      <line x1="678" y1="10" x2="1200" y2="10" stroke-width="0.3" opacity="0.3"/>
+      <line x1="648" y1="22" x2="1200" y2="22"/>
+      <circle cx="410" cy="22" r="2" fill="#C9A07A" opacity="0.5"/>
+      <circle cx="670" cy="22" r="2" fill="#C9A07A" opacity="0.5"/>
+      <path d="M456,22 C452,16 445,12 440,14" stroke-width="0.5" opacity="0.5"/>
+      <path d="M624,22 C628,16 635,12 640,14" stroke-width="0.5" opacity="0.5"/>
+    </g>
+  </svg>
+</div>
+
+<!-- === FULL GALLERY GRID (compact) === -->
+<section class="section" id="gallery" style="background:var(--parchment)">
+  <div class="inner" style="max-width:1200px">
+    <div class="port-header">
+      <div>
+        <p class="eyebrow">Full Portfolio</p>
+        <h2 class="display-title">Every <em>Commission</em></h2>
+      </div>
+      <a href="index.html#contact" class="btn-ghost" style="border-color:rgba(181,113,74,0.35);color:var(--copper-dark)">Commission a Piece →</a>
+    </div>
+
+    <!-- Populated dynamically from the `projects` array in SWI2.js
+         via renderGalleryGrid(), so project data lives in one place.
+         Compact sizing is applied via the #gallery-grid rules above. -->
+    <div class="gallery-grid-wrap" id="gallery-grid"></div>
+
+    <!-- Bottom trust line, matching the homepage's tone -->
+    <div style="text-align:center;margin-top:3rem;display:flex;align-items:center;justify-content:center;gap:1.5rem">
+      <div style="height:1px;width:80px;background:linear-gradient(90deg,transparent,rgba(181,113,74,0.3))"></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:0.8rem;font-style:italic;letter-spacing:0.14em;color:rgba(181,113,74,0.45)">Over 2,000 satisfied clients across the UAE since 1990</p>
+      <div style="height:1px;width:80px;background:linear-gradient(90deg,rgba(181,113,74,0.3),transparent)"></div>
+    </div>
+  </div>
+</section>
+
+<!-- === SCROLLWORK DIVIDER — Forge bg === -->
+<div class="divider-wrap" style="background:var(--forge)">
+  <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g stroke="#B5714A" stroke-width="0.7" fill="none" opacity="0.3">
+      <line x1="0" y1="22" x2="490" y2="22"/>
+      <path d="M490,22 Q500,10 510,10 Q520,10 530,22 Q540,34 550,34 Q560,34 570,22 Q580,10 590,10 Q600,10 610,22 Q620,34 630,34 Q640,34 650,22 Q660,10 670,10 Q680,10 690,22"/>
+      <circle cx="590" cy="22" r="4" fill="rgba(181,113,74,0.15)" stroke="#B5714A" stroke-width="0.8"/>
+      <line x1="690" y1="22" x2="1200" y2="22"/>
+    </g>
+  </svg>
+</div>
+
+<!-- === LIGHTBOX MODAL (identical markup/ids to what SWI2.js expects) === -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Project detail">
+  <div class="lb-header">
+    <div class="lb-title-block">
+      <div class="lb-title" id="lb-title">Project Title</div>
+      <div class="lb-subtitle" id="lb-subtitle">Category · Location</div>
+    </div>
+    <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+  </div>
+  <div class="lb-body">
+    <!-- Image viewer -->
+    <div class="lb-image-area" id="lb-image-area">
+      <div class="lb-img-placeholder" id="lb-placeholder">
+        <svg class="lb-img-ph-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+        <div class="lb-img-ph-text">Add project images via Cloudinary URL</div>
+      </div>
+      <img class="lb-main-img" id="lb-main-img" src="" alt="" style="display:none">
+      <button class="lb-nav-btn lb-prev" onclick="lbPrev()" aria-label="Previous image">‹</button>
+      <button class="lb-nav-btn lb-next" onclick="lbNext()" aria-label="Next image">›</button>
+      <div class="lb-counter" id="lb-counter">1 / 1</div>
+    </div>
+    <!-- Sidebar -->
+    <div class="lb-sidebar">
+      <div class="lb-desc-area">
+        <div class="lb-desc-label">About This Project</div>
+        <div class="lb-desc-text" id="lb-desc">Project description goes here.</div>
+      </div>
+      <div class="lb-thumb-area">
+        <div class="lb-thumb-label">Project Images</div>
+        <div class="lb-thumbs" id="lb-thumbs"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- === FOOTER (identical to index.html) === -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Star ✦ Wrought Iron</div>
+      <div class="footer-brand-tag">"Custom handmade metal fabrications since 1990."</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 1990 – 2025 Star Wrought Iron LLC. All rights reserved.</span>
+    <span class="footer-uae">Umm Al Quwain · United Arab Emirates</span>
+  </div>
+</footer>
+
+<!-- === WHATSAPP FLOATING BUTTON === -->
+<a class="wa-float" id="wa-float"
+   href="https://wa.me/971526588117?text=Hello%20Star%20Wrought%20Iron%2C%20I%27d%20like%20to%20enquire%20about%20a%20custom%20ironwork%20commission."
+   target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+  <span class="wa-float-icon">
+    <span class="wa-float-pulse"></span>
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.42.69 4.68 1.885 6.6L3 29l7.09-2.34a12.44 12.44 0 0 0 5.91 1.5h.004c6.905 0 12.5-5.596 12.5-12.5C28.504 8.596 22.906 3 16.001 3zm0 22.77h-.003a10.34 10.34 0 0 1-5.27-1.44l-.378-.225-3.916 1.293 1.31-3.815-.246-.39a10.24 10.24 0 0 1-1.573-5.49c0-5.68 4.622-10.3 10.303-10.3 2.752 0 5.339 1.073 7.284 3.02a10.23 10.23 0 0 1 3.017 7.29c0 5.68-4.623 10.303-10.303 10.303-.075 0-.15 0-.225-.246zm5.646-7.71c-.31-.155-1.83-.903-2.113-1.006-.284-.104-.49-.155-.696.155-.207.31-.8 1.006-.98 1.213-.18.207-.362.233-.672.078-.31-.155-1.31-.483-2.494-1.538-.922-.822-1.545-1.838-1.726-2.148-.18-.31-.02-.478.136-.633.14-.14.31-.362.465-.543.155-.18.207-.31.31-.517.104-.207.052-.388-.026-.543-.078-.155-.696-1.677-.954-2.297-.251-.603-.507-.522-.696-.532-.18-.008-.388-.01-.595-.01a1.14 1.14 0 0 0-.826.388c-.284.31-1.084 1.06-1.084 2.583s1.11 2.997 1.265 3.204c.155.207 2.185 3.337 5.294 4.68.74.32 1.317.51 1.767.653.742.236 1.418.203 1.952.123.596-.089 1.83-.748 2.088-1.47.258-.723.258-1.343.18-1.47-.077-.128-.283-.207-.593-.362z"/>
+    </svg>
+  </span>
+  <span class="wa-float-text">
+    <span class="wa-float-label">Chat with us</span>
+    <span class="wa-float-sub">WhatsApp</span>
+  </span>
+</a>
 
 <script src="SWI2.js"></script>
 <script>
-  // Reuse the projects array from SWI2.js and render gallery
-  const projects = [ /* paste the projects array from SWI2.js here */ ];
+  /* ============================================================
+     FEATURED CAROUSEL — built from the same `projects` array and
+     `openLightbox()` function already defined in SWI2.js, so there
+     is a single source of truth for project data across the grid,
+     the carousel, and the lightbox. Runs after SWI2.js has loaded.
+     ============================================================ */
+  (function () {
+    var track   = document.getElementById('carouselTrack');
+    var dotsEl  = document.getElementById('carouselDots');
+    var prevBtn = document.getElementById('carouselPrev');
+    var nextBtn = document.getElementById('carouselNext');
+    var frame   = document.getElementById('carouselFrame');
 
-  function renderGallery() {
-    const container = document.getElementById('gallery-grid');
-    container.innerHTML = '';
-    
-    projects.forEach((project, index) => {
-      const item = document.createElement('div');
-      item.className = 'gallery-item';
-      item.innerHTML = `
-        <img src="${project.images[0]}" alt="${project.title}">
-        <div class="port-overlay" style="opacity:1; background: linear-gradient(to top, rgba(26,20,16,0.85), transparent 60%);">
-          <div style="padding:1.5rem">
-            <div class="port-label-title" style="color:white">${project.title}</div>
-            <div class="port-label-sub">${project.subtitle}</div>
-          </div>
-        </div>
-      `;
-      item.onclick = () => openLightbox(index);
-      container.appendChild(item);
+    if (!track || typeof projects === 'undefined' || !projects.length) return;
+
+    var active = 0;
+    var timer = null;
+
+    projects.forEach(function (p, i) {
+      var cover = (p.images && p.images.length) ? p.images[0] : '';
+
+      var slide = document.createElement('div');
+      slide.className = 'carousel-slide' + (i === 0 ? ' active' : '');
+      slide.innerHTML =
+        '<img src="' + cover + '" alt="' + p.title + '" loading="lazy">' +
+        '<div class="carousel-slide-caption">' +
+          '<div class="cs-title">' + p.title + '</div>' +
+          '<div class="cs-sub">' + p.subtitle + '</div>' +
+        '</div>';
+      slide.addEventListener('click', function () { openLightbox(i); });
+      track.appendChild(slide);
+
+      var dot = document.createElement('span');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.addEventListener('click', function () { goTo(i); restartAutoplay(); });
+      dotsEl.appendChild(dot);
     });
-  }
 
-  renderGallery();
+    var slides = track.querySelectorAll('.carousel-slide');
+    var dots   = dotsEl.querySelectorAll('.carousel-dot');
+
+    function goTo(i) {
+      slides[active].classList.remove('active');
+      dots[active].classList.remove('active');
+      active = (i + slides.length) % slides.length;
+      slides[active].classList.add('active');
+      dots[active].classList.add('active');
+    }
+    function next() { goTo(active + 1); }
+    function prev() { goTo(active - 1); }
+
+    function startAutoplay() { timer = setInterval(next, 4500); }
+    function stopAutoplay() { clearInterval(timer); }
+    function restartAutoplay() { stopAutoplay(); startAutoplay(); }
+
+    prevBtn.addEventListener('click', function () { prev(); restartAutoplay(); });
+    nextBtn.addEventListener('click', function () { next(); restartAutoplay(); });
+    frame.addEventListener('mouseenter', stopAutoplay);
+    frame.addEventListener('mouseleave', startAutoplay);
+
+    startAutoplay();
+  })();
 </script>
 </body>
 </html>
