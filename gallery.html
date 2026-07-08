@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery | Star Wrought Iron</title>
+    <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="SWI2.css" rel="stylesheet">
+    <style>
+        .gallery-hero {
+            min-height: 70vh;
+            background: var(--forge);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV (same as index) -->
+<nav>
+  <div class="nav-brand">
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+      <span class="nav-wordmark">Star<span>✦</span>Wrought Iron</span>
+    </a>
+    <!-- social icons same as index -->
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">Heritage</a></li>
+    <li><a href="index.html#services">Specialisations</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle">...</button>
+</nav>
+
+<!-- Gallery Hero -->
+<section class="gallery-hero">
+  <div>
+    <p class="hero-eyebrow">Our Craftsmanship</p>
+    <h1 class="hero-h1" style="color:var(--parchment)">Gallery</h1>
+    <p class="hero-tagline">Hand-forged masterpieces in iron</p>
+  </div>
+</section>
+
+<!-- Gallery Grid -->
+<section style="background:var(--parchment); padding-bottom: 6rem;">
+  <div class="gallery-grid" id="gallery-grid">
+    <!-- JS will populate this -->
+  </div>
+</section>
+
+<!-- Footer (copy from index.html) -->
+<footer> ... your existing footer ... </footer>
+
+<script src="SWI2.js"></script>
+<script>
+  // Reuse the projects array from SWI2.js and render gallery
+  const projects = [ /* paste the projects array from SWI2.js here */ ];
+
+  function renderGallery() {
+    const container = document.getElementById('gallery-grid');
+    container.innerHTML = '';
+    
+    projects.forEach((project, index) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.innerHTML = `
+        <img src="${project.images[0]}" alt="${project.title}">
+        <div class="port-overlay" style="opacity:1; background: linear-gradient(to top, rgba(26,20,16,0.85), transparent 60%);">
+          <div style="padding:1.5rem">
+            <div class="port-label-title" style="color:white">${project.title}</div>
+            <div class="port-label-sub">${project.subtitle}</div>
+          </div>
+        </div>
+      `;
+      item.onclick = () => openLightbox(index);
+      container.appendChild(item);
+    });
+  }
+
+  renderGallery();
+</script>
+</body>
+</html>
