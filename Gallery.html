@@ -1,588 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wrought &amp; Wren — Ironwork Portfolio</title>
-
-<!-- Tailwind CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- Fonts: Cormorant Garamond (display/serif) + Inter (body/sans) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-  /* ============ Design tokens ============ */
-  :root{
-    --parchment:#F0E8E0;
-    --off-white:#FAF7F3;
-    --warm-gray:#3E3A36;
-    --warm-gray-soft:#6B655D;
-    --copper:#B5714A;
-    --copper-light:#CE9066;
-    --ink:#241F1B;
-    --line:#DCD1C4;
-  }
-
-  *{ box-sizing:border-box; }
-
-  body{
-    background-color: var(--off-white);
-    color: var(--ink);
-    font-family:'Inter', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  .font-serif-display{ font-family:'Cormorant Garamond', serif; }
-
-  /* subtle grain / warmth overlay across the page */
-  .grain-bg{
-    background-image:
-      radial-gradient(circle at 20% 10%, rgba(181,113,74,0.05), transparent 40%),
-      radial-gradient(circle at 80% 60%, rgba(181,113,74,0.04), transparent 45%);
-  }
-
-  /* ============ Header / filter ============ */
-  .filter-btn{
-    border:1px solid var(--warm-gray);
-    background:transparent;
-    color:var(--warm-gray);
-    letter-spacing:0.04em;
-    transition: all .35s ease;
-  }
-  .filter-btn:hover{
-    border-color: var(--copper);
-    color: var(--copper);
-  }
-  .filter-caret{
-    transition: transform .3s ease;
-  }
-  .filter-caret.open{
-    transform: rotate(180deg);
-  }
-
-  #filterDropdown{
-    opacity:0;
-    transform: translateY(-8px);
-    pointer-events:none;
-    transition: opacity .3s ease, transform .3s ease;
-  }
-  #filterDropdown.show{
-    opacity:1;
-    transform: translateY(0);
-    pointer-events:auto;
-  }
-
-  .filter-option{
-    transition: background-color .25s ease, color .25s ease, padding-left .25s ease;
-    border-bottom:1px solid var(--line);
-  }
-  .filter-option:last-child{ border-bottom:none; }
-  .filter-option:hover{
-    background-color: var(--parchment);
-    color: var(--copper);
-    padding-left: 1.75rem;
-  }
-  .filter-option.active{
-    color: var(--copper);
-    font-weight:500;
-  }
-
-  /* ============ Gallery grid (masonry via CSS columns) ============ */
-  .masonry{
-    column-count: 1;
-    column-gap: 1.75rem;
-  }
-  @media (min-width: 768px){
-    .masonry{ column-count: 2; }
-  }
-  @media (min-width: 1100px){
-    .masonry{ column-count: 3; }
-  }
-
-  .gallery-card{
-    break-inside: avoid;
-    margin-bottom: 1.75rem;
-    opacity:0;
-    transform: translateY(18px);
-    animation: cardIn .7s ease forwards;
-  }
-  @keyframes cardIn{
-    to{ opacity:1; transform: translateY(0); }
-  }
-
-  .card-frame{
-    position:relative;
-    border:1px solid var(--line);
-    padding:.5rem;
-    background: var(--off-white);
-    box-shadow: 0 1px 2px rgba(36,31,27,0.04);
-    transition: transform .5s ease, box-shadow .5s ease, border-color .5s ease;
-    cursor:pointer;
-  }
-  .card-frame:hover{
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px -18px rgba(36,31,27,0.35);
-    border-color: var(--copper-light);
-  }
-
-  .card-frame .inner-border{
-    position:absolute; inset:.5rem;
-    border:1px solid rgba(181,113,74,0.35);
-    pointer-events:none;
-    z-index:5;
-  }
-
-  .card-img-wrap{
-    position:relative;
-    overflow:hidden;
-  }
-  .card-img-wrap img{
-    width:100%; height:100%; display:block;
-    object-fit:cover;
-    transition: transform 1s cubic-bezier(.2,.7,.2,1);
-    filter: saturate(0.95) contrast(1.02);
-  }
-  .card-frame:hover .card-img-wrap img{
-    transform: scale(1.06);
-  }
-
-  /* dark elegant overlay */
-  .card-overlay{
-    position:absolute; inset:0;
-    background: linear-gradient(180deg, rgba(36,31,27,0) 35%, rgba(24,20,17,0.88) 100%);
-    opacity:0;
-    transition: opacity .5s ease;
-    display:flex; flex-direction:column; justify-content:flex-end;
-    padding: 1.25rem;
-  }
-  .card-frame:hover .card-overlay{ opacity:1; }
-
-  .card-overlay .ov-title, .card-overlay .ov-sub{
-    transform: translateY(10px);
-    opacity:0;
-    transition: transform .5s ease .05s, opacity .5s ease .05s;
-  }
-  .card-frame:hover .card-overlay .ov-title,
-  .card-frame:hover .card-overlay .ov-sub{
-    transform: translateY(0);
-    opacity:1;
-  }
-
-  .category-tag{
-    position:absolute; top:.9rem; left:.9rem; z-index:6;
-    background: rgba(240,232,224,0.92);
-    color: var(--copper);
-    border:1px solid var(--copper);
-    font-size:.65rem;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    padding:.28rem .6rem;
-  }
-
-  /* ============ Lightbox ============ */
-  #lightbox{
-    position:fixed; inset:0; z-index:100;
-    background: rgba(20,17,15,0.94);
-    display:flex; align-items:center; justify-content:center;
-    opacity:0; visibility:hidden;
-    transition: opacity .4s ease, visibility 0s linear .4s;
-  }
-  #lightbox.open{
-    opacity:1; visibility:visible;
-    transition: opacity .4s ease, visibility 0s linear 0s;
-  }
-  #lightbox .lb-content{
-    transform: scale(.92);
-    transition: transform .45s cubic-bezier(.2,.7,.2,1);
-  }
-  #lightbox.open .lb-content{
-    transform: scale(1);
-  }
-
-  .lb-arrow{
-    transition: color .3s ease, transform .3s ease;
-    color: rgba(240,232,224,0.65);
-  }
-  .lb-arrow:hover{ color: var(--copper-light); transform: scale(1.1); }
-
-  .lb-close{
-    color: rgba(240,232,224,0.65);
-    transition: color .3s ease, transform .3s ease;
-  }
-  .lb-close:hover{ color: var(--copper-light); transform: rotate(90deg); }
-
-  .thumb{
-    opacity:.45;
-    border:1px solid transparent;
-    transition: opacity .3s ease, border-color .3s ease;
-    cursor:pointer;
-  }
-  .thumb:hover{ opacity:.8; }
-  .thumb.active{
-    opacity:1;
-    border-color: var(--copper);
-  }
-
-  /* scrollbar tidy for thumb strip */
-  .thumb-strip::-webkit-scrollbar{ height:5px; }
-  .thumb-strip::-webkit-scrollbar-thumb{ background: rgba(181,113,74,.4); }
-
-  /* divider ornament */
-  .ornament{
-    width:44px; height:1px;
-    background: var(--copper);
-    position:relative;
-  }
-  .ornament::before{
-    content:"";
-    position:absolute; left:50%; top:50%;
-    transform: translate(-50%,-50%) rotate(45deg);
-    width:6px; height:6px;
-    border:1px solid var(--copper);
-    background: var(--off-white);
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <title>Gallery | Star Wrought Iron — Premium Ironcraft UAE</title>
+    <meta name="description" content="Browse the complete Star Wrought Iron portfolio — bespoke gates, staircases, screens, chandeliers and custom ironwork commissions handcrafted across the UAE since 1990.">
+    <link rel="icon" href="https://res.cloudinary.com/detapf5a7/image/upload/v1782897698/ChatGPT_Image_Jul_1_2026_01_20_30_PM_zulpf2.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+<body>
 
-<body class="grain-bg">
+<!-- === GOOGLE FONTS === -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="SWI2.css" rel="stylesheet">
 
-  <!-- ============ HERO / TOP ============ -->
-  <header class="max-w-7xl mx-auto px-6 md:px-10 pt-14 pb-8">
-    <div class="flex flex-col items-center text-center gap-3 mb-12">
-      <p class="text-xs tracking-[0.3em] uppercase text-[var(--copper)]">Handforged Since 1994</p>
-      <h1 class="font-serif-display text-5xl md:text-6xl italic font-medium text-[var(--warm-gray)]">Wrought &amp; Wren</h1>
-      <div class="ornament my-2"></div>
-      <p class="max-w-xl text-sm md:text-base text-[var(--warm-gray-soft)] font-light leading-relaxed">
-        A curated collection of gates, stairways, and fine metalwork —
-        each piece shaped by hand, fire, and patience.
-      </p>
-    </div>
-
-    <!-- Filter -->
-    <div class="relative flex items-center justify-start mb-4" id="filterWrap">
-      <button id="filterBtn" class="filter-btn flex items-center gap-2 px-5 py-2.5 text-sm uppercase tracking-widest">
-        <span id="filterLabel">All Projects</span>
-        <svg class="filter-caret w-3 h-3" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>
-      </button>
-
-      <div id="filterDropdown" class="absolute top-full left-0 mt-2 w-64 bg-[var(--off-white)] border border-[var(--line)] shadow-xl z-20">
-        <button class="filter-option active w-full text-left px-6 py-3 text-sm" data-cat="All Projects">All Projects</button>
-        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Gates & Entrances">Gates &amp; Entrances</button>
-        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Staircases & Railings">Staircases &amp; Railings</button>
-        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Doors & Screens">Doors &amp; Screens</button>
-        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Furniture & Décor">Furniture &amp; Décor</button>
-        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Restoration">Restoration</button>
-        <button class="filter-option w-full text-left px-6 py-3 text-sm" data-cat="Custom Commissions">Custom Commissions</button>
-      </div>
-    </div>
-    <div class="w-full h-px bg-[var(--line)]"></div>
-  </header>
-
-  <!-- ============ GALLERY ============ -->
-  <main class="max-w-7xl mx-auto px-6 md:px-10 pb-24">
-    <div id="gallery" class="masonry"></div>
-  </main>
-
-  <footer class="text-center py-10 text-xs tracking-widest uppercase text-[var(--warm-gray-soft)] border-t border-[var(--line)]">
-    &copy; 2026 Wrought &amp; Wren Ironworks — Crafted by hand, one commission at a time.
-  </footer>
-
-  <!-- ============ LIGHTBOX ============ -->
-  <div id="lightbox">
-    <button id="lbClose" class="lb-close absolute top-6 right-6 md:top-8 md:right-10 z-20" aria-label="Close">
-      <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none"><path d="M4 4L20 20M20 4L4 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-    </button>
-
-    <button id="lbPrev" class="lb-arrow absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20" aria-label="Previous">
-      <svg class="w-9 h-9 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button id="lbNext" class="lb-arrow absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20" aria-label="Next">
-      <svg class="w-9 h-9 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-
-    <div class="lb-content w-full max-w-5xl mx-4 md:mx-auto flex flex-col items-center">
-      <div class="w-full flex items-center justify-center mb-4 md:mb-6" style="height:52vh;">
-        <img id="lbImage" src="" alt="" class="max-h-full max-w-full object-contain border border-[rgba(240,232,224,0.15)]">
-      </div>
-
-      <div class="text-center px-4 mb-4">
-        <p id="lbCategory" class="text-[var(--copper-light)] text-xs uppercase tracking-[0.25em] mb-2"></p>
-        <h2 id="lbTitle" class="font-serif-display italic text-3xl md:text-4xl text-[var(--parchment)] mb-1"></h2>
-        <p id="lbSub" class="text-[rgba(240,232,224,0.6)] text-sm mb-3 font-light"></p>
-        <p id="lbDesc" class="text-[rgba(240,232,224,0.75)] text-sm max-w-xl mx-auto leading-relaxed font-light"></p>
-      </div>
-
-      <div id="thumbStrip" class="thumb-strip flex gap-3 overflow-x-auto max-w-full px-4 pb-2"></div>
+<!-- === NAV (identical to index.html) === -->
+<nav>
+  <div class="nav-brand">
+    <a href="index.html#hero" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+      <span class="nav-wordmark">Star<span>✦</span>Wrought Iron</span>
+    </a>
+    <div class="nav-social">
+      <a href="https://www.instagram.com/starwroughtironllc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.facebook.com/starwroughtiron/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      </a>
     </div>
   </div>
+  <ul class="nav-links">
+    <li><a href="index.html#hero">Home</a></li>
+    <li><a href="index.html#about">Heritage</a></li>
+    <li><a href="index.html#services">Specialisations</a></li>
+    <li><a href="gallery.html" style="color:var(--copper)">Gallery</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-panel" id="nav-mobile-panel">
+  <a href="index.html#hero">Home</a>
+  <a href="index.html#about">Heritage</a>
+  <a href="index.html#services">Specialisations</a>
+  <a href="gallery.html" style="color:var(--copper)">Gallery</a>
+  <a href="index.html#process">Process</a>
+  <a href="index.html#contact">Contact</a>
+</div>
 
-<script>
-/* ==========================================================
-   DATA — 10 sample commissions across the six categories.
-   Each project: title, subtitle, category, description, images[]
-   ========================================================== */
-const projects = [
-  {
-    title: "The Ashcombe Gate",
-    subtitle: "Private Estate, Hampshire",
-    category: "Gates & Entrances",
-    description: "A pair of hand-riveted entrance gates featuring scrolled acanthus finials, forged in a single continuous run to preserve the grain of the iron.",
-    images: [10,20,30]
-  },
-  {
-    title: "Helix Stair Rail",
-    subtitle: "Coastal Residence, Maine",
-    category: "Staircases & Railings",
-    description: "A spiralling balustrade of twisted square-bar iron, finished in a soft graphite patina to complement whitewashed oak treads.",
-    images: [40,41,42,43]
-  },
-  {
-    title: "Linden Screen Door",
-    subtitle: "Garden Folly, Provence",
-    category: "Doors & Screens",
-    description: "A lattice screen door inspired by pruned linden branches, allowing dappled light while framing the orchard beyond.",
-    images: [50,51,52]
-  },
-  {
-    title: "Ember Console Table",
-    subtitle: "Study Commission, London",
-    category: "Furniture & Décor",
-    description: "A slender console with a hand-hammered top and tapered legs, its surface finished in warm blackened wax.",
-    images: [60,61]
-  },
-  {
-    title: "Cathedral Hinge Restoration",
-    subtitle: "17th-Century Chapel, Yorkshire",
-    category: "Restoration",
-    description: "Full conservation of the original strap hinges, cleaned of two centuries of rust and re-tempered without losing their hand-hammered texture.",
-    images: [70,71,72]
-  },
-  {
-    title: "The Wren Balcony",
-    subtitle: "Custom Commission, Charleston",
-    category: "Custom Commissions",
-    description: "A curved Juliet balcony designed around a client's sketch of nesting wrens, forged with hidden perches along the lower rail.",
-    images: [80,81,82,83]
-  },
-  {
-    title: "Meridian Courtyard Gate",
-    subtitle: "Vineyard Entrance, Sonoma",
-    category: "Gates & Entrances",
-    description: "Twin swinging gates with a sunburst motif, sized to frame the vineyard's central allée of olive trees.",
-    images: [90,91,92]
-  },
-  {
-    title: "Orsay Spiral Staircase",
-    subtitle: "Loft Conversion, Paris",
-    category: "Staircases & Railings",
-    description: "A compact spiral stair with a continuous ribbon handrail, engineered to fit within a 1.4-metre footprint.",
-    images: [100,101,102]
-  },
-  {
-    title: "Foundry Fire Screen",
-    subtitle: "Manor Drawing Room, Bath",
-    category: "Furniture & Décor",
-    description: "A folding fire screen with pierced flame motifs, designed to cast warm shadow patterns across the hearthstones.",
-    images: [110,111]
-  },
-  {
-    title: "Abbot's Gate Reforging",
-    subtitle: "Monastery Restoration, Umbria",
-    category: "Restoration",
-    description: "Reforging of a 15th-century monastery gate using salvaged iron, replicating the original hand-forged rivet pattern.",
-    images: [120,121,122]
-  },
-  {
-    title: "Sable Room Divider",
-    subtitle: "Custom Commission, New York",
-    category: "Custom Commissions",
-    description: "A free-standing screen of interlocking iron rings, designed to soften an open-plan apartment without closing it off.",
-    images: [130,131,132]
-  },
-  {
-    title: "Larkspur Garden Door",
-    subtitle: "Walled Garden, Cotswolds",
-    category: "Doors & Screens",
-    description: "A narrow garden door with a floral piercing pattern echoing the larkspur beds planted along the boundary wall.",
-    images: [140,141]
-  }
-];
+<!-- === GALLERY PAGE HERO === -->
+<section class="page-hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
 
-/* Build a full image URL from a picsum id */
-function imgUrl(id, w=800, h=600){
-  return `https://picsum.photos/id/${id}/${w}/${h}`;
-}
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="crumb-sep">／</span>
+    <span class="crumb-current">Gallery</span>
+  </nav>
 
-/* ==========================================================
-   RENDER GALLERY
-   ========================================================== */
-const galleryEl = document.getElementById('gallery');
-let currentFilter = "All Projects";
+  <p class="hero-eyebrow" style="justify-content:center">Premium Ironcraft · Complete Portfolio</p>
+  <h1 class="display-title" style="color:var(--parchment);max-width:720px;margin:0 auto 1.2rem">Crafted for <em>Excellence</em></h1>
+  <p class="hero-tagline" style="margin:0 auto">Every gate, staircase, screen and commission shaped by hand in our Umm Al Quwain workshop — explore the full body of our work below.</p>
 
-function renderGallery(){
-  galleryEl.innerHTML = "";
-  const list = projects.filter(p => currentFilter === "All Projects" || p.category === currentFilter);
+  <div class="hero-actions" style="margin-top:2.4rem">
+    <a href="index.html" class="btn-ghost">← Back to Home</a>
+    <a href="index.html#contact" class="btn-primary">Commission a Piece →</a>
+  </div>
+</section>
 
-  list.forEach((project, idx) => {
-    const card = document.createElement('div');
-    card.className = "gallery-card";
-    card.style.animationDelay = `${idx * 0.06}s`;
+<!-- === SCROLLWORK DIVIDER — Parchment bg === -->
+<div class="divider-wrap" style="background:var(--parchment)">
+  <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g stroke="#B5714A" stroke-width="0.7" fill="none" opacity="0.55">
+      <line x1="0" y1="22" x2="440" y2="22"/>
+      <path d="M440,22 C455,22 455,10 468,10 C481,10 481,34 494,34 C507,34 507,10 520,10 C533,10 533,22 540,22"/>
+      <circle cx="540" cy="22" r="3" fill="rgba(181,113,74,0.25)" stroke="#B5714A"/>
+      <circle cx="540" cy="22" r="8" stroke="#B5714A" stroke-width="0.5"/>
+      <circle cx="540" cy="22" r="13" stroke="rgba(181,113,74,0.25)" stroke-width="0.5"/>
+      <path d="M548,22 C555,22 555,10 568,10 C581,10 581,34 594,34 C607,34 607,10 620,10 C633,10 633,22 648,22"/>
+      <path d="M648,22 C665,22 665,10 678,10"/>
+      <line x1="678" y1="10" x2="1200" y2="10" stroke-width="0.3" opacity="0.3"/>
+      <line x1="648" y1="22" x2="1200" y2="22"/>
+      <circle cx="410" cy="22" r="2" fill="#C9A07A" opacity="0.5"/>
+      <circle cx="670" cy="22" r="2" fill="#C9A07A" opacity="0.5"/>
+      <path d="M456,22 C452,16 445,12 440,14" stroke-width="0.5" opacity="0.5"/>
+      <path d="M624,22 C628,16 635,12 640,14" stroke-width="0.5" opacity="0.5"/>
+    </g>
+  </svg>
+</div>
 
-    card.innerHTML = `
-      <div class="card-frame" data-project-index="${projects.indexOf(project)}">
-        <span class="category-tag">${project.category}</span>
-        <div class="card-img-wrap">
-          <img src="${imgUrl(project.images[0])}" alt="${project.title}" loading="lazy">
-          <div class="card-overlay">
-            <p class="ov-title font-serif-display italic text-2xl text-[var(--parchment)]">${project.title}</p>
-            <p class="ov-sub text-xs tracking-wide text-[rgba(240,232,224,0.75)] mt-1">${project.subtitle}</p>
-          </div>
-        </div>
-        <div class="inner-border"></div>
+<!-- === FULL GALLERY GRID === -->
+<section class="section" id="gallery" style="background:var(--parchment)">
+  <div class="inner" style="max-width:1200px">
+    <div class="port-header">
+      <div>
+        <p class="eyebrow">Full Portfolio</p>
+        <h2 class="display-title">Every <em>Commission</em></h2>
       </div>
-    `;
-    galleryEl.appendChild(card);
-  });
+      <a href="index.html#contact" class="btn-ghost" style="border-color:rgba(181,113,74,0.35);color:var(--copper-dark)">Commission a Piece →</a>
+    </div>
 
-  // attach click listeners to open lightbox
-  document.querySelectorAll('.card-frame').forEach(el => {
-    el.addEventListener('click', () => {
-      const pIndex = parseInt(el.getAttribute('data-project-index'));
-      openLightbox(pIndex, 0);
-    });
-  });
-}
+    <!-- Populated dynamically from the `projects` array in SWI2.js
+         via renderGalleryGrid(), so project data lives in one place. -->
+    <div class="gallery-grid-wrap" id="gallery-grid"></div>
 
-/* ==========================================================
-   FILTER DROPDOWN
-   ========================================================== */
-const filterBtn = document.getElementById('filterBtn');
-const filterDropdown = document.getElementById('filterDropdown');
-const filterCaret = document.querySelector('.filter-caret');
-const filterLabel = document.getElementById('filterLabel');
+    <!-- Bottom trust line, matching the homepage's tone -->
+    <div style="text-align:center;margin-top:3rem;display:flex;align-items:center;justify-content:center;gap:1.5rem">
+      <div style="height:1px;width:80px;background:linear-gradient(90deg,transparent,rgba(181,113,74,0.3))"></div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:0.8rem;font-style:italic;letter-spacing:0.14em;color:rgba(181,113,74,0.45)">Over 2,000 satisfied clients across the UAE since 1990</p>
+      <div style="height:1px;width:80px;background:linear-gradient(90deg,rgba(181,113,74,0.3),transparent)"></div>
+    </div>
+  </div>
+</section>
 
-filterBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  filterDropdown.classList.toggle('show');
-  filterCaret.classList.toggle('open');
-});
+<!-- === SCROLLWORK DIVIDER — Forge bg === -->
+<div class="divider-wrap" style="background:var(--forge)">
+  <svg viewBox="0 0 1200 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g stroke="#B5714A" stroke-width="0.7" fill="none" opacity="0.3">
+      <line x1="0" y1="22" x2="490" y2="22"/>
+      <path d="M490,22 Q500,10 510,10 Q520,10 530,22 Q540,34 550,34 Q560,34 570,22 Q580,10 590,10 Q600,10 610,22 Q620,34 630,34 Q640,34 650,22 Q660,10 670,10 Q680,10 690,22"/>
+      <circle cx="590" cy="22" r="4" fill="rgba(181,113,74,0.15)" stroke="#B5714A" stroke-width="0.8"/>
+      <line x1="690" y1="22" x2="1200" y2="22"/>
+    </g>
+  </svg>
+</div>
 
-document.querySelectorAll('.filter-option').forEach(opt => {
-  opt.addEventListener('click', () => {
-    currentFilter = opt.getAttribute('data-cat');
-    filterLabel.textContent = currentFilter;
+<!-- === LIGHTBOX MODAL (identical markup/ids to what SWI2.js expects) === -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Project detail">
+  <div class="lb-header">
+    <div class="lb-title-block">
+      <div class="lb-title" id="lb-title">Project Title</div>
+      <div class="lb-subtitle" id="lb-subtitle">Category · Location</div>
+    </div>
+    <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+  </div>
+  <div class="lb-body">
+    <!-- Image viewer -->
+    <div class="lb-image-area" id="lb-image-area">
+      <div class="lb-img-placeholder" id="lb-placeholder">
+        <svg class="lb-img-ph-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+        <div class="lb-img-ph-text">Add project images via Cloudinary URL</div>
+      </div>
+      <img class="lb-main-img" id="lb-main-img" src="" alt="" style="display:none">
+      <button class="lb-nav-btn lb-prev" onclick="lbPrev()" aria-label="Previous image">‹</button>
+      <button class="lb-nav-btn lb-next" onclick="lbNext()" aria-label="Next image">›</button>
+      <div class="lb-counter" id="lb-counter">1 / 1</div>
+    </div>
+    <!-- Sidebar -->
+    <div class="lb-sidebar">
+      <div class="lb-desc-area">
+        <div class="lb-desc-label">About This Project</div>
+        <div class="lb-desc-text" id="lb-desc">Project description goes here.</div>
+      </div>
+      <div class="lb-thumb-area">
+        <div class="lb-thumb-label">Project Images</div>
+        <div class="lb-thumbs" id="lb-thumbs"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    document.querySelectorAll('.filter-option').forEach(o => o.classList.remove('active'));
-    opt.classList.add('active');
+<!-- === FOOTER (identical to index.html) === -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Star ✦ Wrought Iron</div>
+      <div class="footer-brand-tag">"Custom handmade metal fabrications since 1990."</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 1990 – 2025 Star Wrought Iron LLC. All rights reserved.</span>
+    <span class="footer-uae">Umm Al Quwain · United Arab Emirates</span>
+  </div>
+</footer>
 
-    filterDropdown.classList.remove('show');
-    filterCaret.classList.remove('open');
-    renderGallery();
-  });
-});
+<!-- === WHATSAPP FLOATING BUTTON === -->
+<a class="wa-float" id="wa-float"
+   href="https://wa.me/971526588117?text=Hello%20Star%20Wrought%20Iron%2C%20I%27d%20like%20to%20enquire%20about%20a%20custom%20ironwork%20commission."
+   target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+  <span class="wa-float-icon">
+    <span class="wa-float-pulse"></span>
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.42.69 4.68 1.885 6.6L3 29l7.09-2.34a12.44 12.44 0 0 0 5.91 1.5h.004c6.905 0 12.5-5.596 12.5-12.5C28.504 8.596 22.906 3 16.001 3zm0 22.77h-.003a10.34 10.34 0 0 1-5.27-1.44l-.378-.225-3.916 1.293 1.31-3.815-.246-.39a10.24 10.24 0 0 1-1.573-5.49c0-5.68 4.622-10.3 10.303-10.3 2.752 0 5.339 1.073 7.284 3.02a10.23 10.23 0 0 1 3.017 7.29c0 5.68-4.623 10.303-10.303 10.303-.075 0-.15 0-.225-.246zm5.646-7.71c-.31-.155-1.83-.903-2.113-1.006-.284-.104-.49-.155-.696.155-.207.31-.8 1.006-.98 1.213-.18.207-.362.233-.672.078-.31-.155-1.31-.483-2.494-1.538-.922-.822-1.545-1.838-1.726-2.148-.18-.31-.02-.478.136-.633.14-.14.31-.362.465-.543.155-.18.207-.31.31-.517.104-.207.052-.388-.026-.543-.078-.155-.696-1.677-.954-2.297-.251-.603-.507-.522-.696-.532-.18-.008-.388-.01-.595-.01a1.14 1.14 0 0 0-.826.388c-.284.31-1.084 1.06-1.084 2.583s1.11 2.997 1.265 3.204c.155.207 2.185 3.337 5.294 4.68.74.32 1.317.51 1.767.653.742.236 1.418.203 1.952.123.596-.089 1.83-.748 2.088-1.47.258-.723.258-1.343.18-1.47-.077-.128-.283-.207-.593-.362z"/>
+    </svg>
+  </span>
+  <span class="wa-float-text">
+    <span class="wa-float-label">Chat with us</span>
+    <span class="wa-float-sub">WhatsApp</span>
+  </span>
+</a>
 
-// close dropdown when clicking outside
-document.addEventListener('click', (e) => {
-  if (!document.getElementById('filterWrap').contains(e.target)){
-    filterDropdown.classList.remove('show');
-    filterCaret.classList.remove('open');
-  }
-});
-
-/* ==========================================================
-   LIGHTBOX
-   ========================================================== */
-const lightbox = document.getElementById('lightbox');
-const lbImage = document.getElementById('lbImage');
-const lbTitle = document.getElementById('lbTitle');
-const lbSub = document.getElementById('lbSub');
-const lbCategory = document.getElementById('lbCategory');
-const lbDesc = document.getElementById('lbDesc');
-const thumbStrip = document.getElementById('thumbStrip');
-
-let activeProjectIndex = 0;
-let activeImageIndex = 0;
-
-function openLightbox(projectIndex, imageIndex){
-  activeProjectIndex = projectIndex;
-  activeImageIndex = imageIndex;
-  updateLightboxContent();
-  lightbox.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox(){
-  lightbox.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function updateLightboxContent(){
-  const project = projects[activeProjectIndex];
-  const imgId = project.images[activeImageIndex];
-
-  lbImage.src = imgUrl(imgId, 1400, 1000);
-  lbImage.alt = project.title;
-  lbTitle.textContent = project.title;
-  lbSub.textContent = project.subtitle;
-  lbCategory.textContent = project.category;
-  lbDesc.textContent = project.description;
-
-  // build thumbnail strip
-  thumbStrip.innerHTML = "";
-  project.images.forEach((id, i) => {
-    const thumb = document.createElement('img');
-    thumb.src = imgUrl(id, 160, 120);
-    thumb.className = `thumb w-20 h-14 object-cover flex-shrink-0 ${i === activeImageIndex ? 'active' : ''}`;
-    thumb.addEventListener('click', () => {
-      activeImageIndex = i;
-      updateLightboxContent();
-    });
-    thumbStrip.appendChild(thumb);
-  });
-}
-
-function showNextImage(){
-  const project = projects[activeProjectIndex];
-  activeImageIndex = (activeImageIndex + 1) % project.images.length;
-  updateLightboxContent();
-}
-
-function showPrevImage(){
-  const project = projects[activeProjectIndex];
-  activeImageIndex = (activeImageIndex - 1 + project.images.length) % project.images.length;
-  updateLightboxContent();
-}
-
-document.getElementById('lbClose').addEventListener('click', closeLightbox);
-document.getElementById('lbNext').addEventListener('click', showNextImage);
-document.getElementById('lbPrev').addEventListener('click', showPrevImage);
-
-// click outside image content closes lightbox
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) closeLightbox();
-});
-
-// keyboard support
-document.addEventListener('keydown', (e) => {
-  if (!lightbox.classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowRight') showNextImage();
-  if (e.key === 'ArrowLeft') showPrevImage();
-});
-
-/* ==========================================================
-   INIT
-   ========================================================== */
-renderGallery();
-</script>
-
+<script src="SWI2.js"></script>
 </body>
 </html>
